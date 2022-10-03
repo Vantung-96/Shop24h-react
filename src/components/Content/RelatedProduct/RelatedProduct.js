@@ -3,6 +3,14 @@ import {useEffect , useState} from "react";
 
 
 function RelatedProduct() {
+    const hoverEffect = {
+        "&:hover" :{
+            border: "1px solid black",
+            boxShadow: "1px 1px",
+            
+        }
+    }
+
     const limit = 6;
     const [varRefeshPage, setVarRefeshPage] = useState(0);
     const [data, setData] = useState([]);
@@ -34,7 +42,7 @@ function RelatedProduct() {
 
                     {
                         data.map((row, index) => {
-                            return <Grid item xs={4} key={index} pb={2}>
+                            return <Grid item xs={4} key={index} pb={2} sx={hoverEffect}>
                                  <a href={`/product/` + row._id}>
                                     <img src={row.imageUrl} style={{ width: "80%" }} loading="lazy" alt="" />
                                     </a>

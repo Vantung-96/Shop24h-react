@@ -16,7 +16,8 @@ export const textDecoration = {
 }
 export const styleButon = {
     paddingRight: "20px", 
-    color: "white"
+    color: "white",
+    marginTop: "3px"
 }
 export const buttonSpace ={
     marginLeft: "50px", 

@@ -9,6 +9,14 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
 function DanhMuc() {
+    const hoverEffect = {
+        "&:hover" :{
+            border: "1px solid black",
+            boxShadow: "1px 1px",
+            
+        }
+    }
+
     const { maxPrice, minPrice, isClick, name } = useSelector((reduxData) => reduxData.filter);
     const dispatch = useDispatch();
     const [varRefeshPage, setVarRefeshPage] = useState(0);
@@ -76,7 +84,7 @@ function DanhMuc() {
                     <Grid item xs={9} textAlign="center" container  spacing={1} rowSpacing={2}>
                         {
                             !(users.length === 0) ? users.map((row, index) => {
-                                return <Grid item xs={4} key={index}  >
+                                return <Grid item xs={4} key={index} sx={hoverEffect}  >
                                     <a href={`/product/` + row._id}>
                                         <img src={row.imageUrl} style={{ width: "80%" }} loading="lazy" alt="" />
                                     </a>

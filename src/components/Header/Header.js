@@ -76,10 +76,10 @@ function Header() {
                     {
                         user ? <>
                             <Button style={styleButon}  ><NotificationsActiveIcon /></Button>
-                            <Button style={styleButon} sx={{width:"20%"}} href="/cart"><AddShoppingCartIcon />Giỏ hàng <code style={{color:"red", marginBottom:"5px"}}>{cartSize !== 0 ? "("+cartSize+")": null }</code></Button>
-                            <Button onClick={handleClick} sx={{ marginTop: "-5px" }} textAlign="left" ><Avatar alt="avatar" src={user.photoURL} sx={{ width: "17%", height: "17%" }} /><span>{"\u00a0"}{user.displayName}</span></Button>
+                            <Button style={styleButon} sx={{width:"20%"}} href="/cart"><AddShoppingCartIcon />Giỏ hàng <code style={{marginBottom:"5px", borderRadius:"15px", backgroundColor:"red" , padding:"0px 8px"}}>{cartSize !== 0 ? cartSize : null }</code></Button>
+                            <Button onClick={handleClick} sx={{ marginTop: "-5px",marginLeft:"-50px" }} textAlign="left" ><Avatar alt="avatar" src={user.photoURL} sx={{ width: "17%", height: "17%" }} /><span>{"\u00a0"}{user.displayName}</span></Button>
                             <Menu
-                                
+                                sx={{marginLeft:"60px"}}
                                 anchorEl={anchorEl}
                                 open={open}
                                 onClose={handleCloseItem}
@@ -91,9 +91,11 @@ function Header() {
                                 <MenuItem onClick={handleClose}>My account</MenuItem>
                                 <MenuItem onClick={logoutGoogle}>Logout</MenuItem>
                             </Menu>
-                        </> : <>
+                        </> 
+                        : 
+                        <>
                             <Button style={styleButon} onClick={() => { onLogInClick() }} ><PersonIcon />Đăng nhập</Button>
-                            <Button style={styleButon} href="/cart"><AddShoppingCartIcon />Giỏ hàng <code style={{ marginBottom:"5px" , border:"1px solid", borderRadius:"15px", backgroundColor:"red" , padding:"0px 8px"}}>{cartSize !== 0 ? cartSize: null }</code></Button>
+                            <Button style={styleButon} href="/cart"><AddShoppingCartIcon />Giỏ hàng <code style={{ marginBottom:"5px" ,  borderRadius:"15px", backgroundColor:"red" , padding:"0px 8px"}}>{cartSize !== 0 ? cartSize : null }</code></Button>
                         </>
                     }
                 </Grid>
