@@ -5,7 +5,6 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useState, useEffect } from "react";
 import LogInModal from "../Content/LogInModal/LoginModal";
 import { auth, googleProvider } from "../../firebase";
-import { headerPosition, logo, textDecoration, styleButon, buttonSpace } from './Headercss.js';
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
