@@ -1,9 +1,11 @@
-import { Modal, Box, Typography, Grid, Button, TextField } from "@mui/material";
+import { Modal, Box, Grid, Button, TextField } from "@mui/material";
 import GoogleIcon from '@mui/icons-material/Google';
+import {useSelector } from "react-redux";
+import { auth, googleProvider } from "../../../firebase";
+import { useDispatch } from "react-redux";
 
 
-
-function LogInModal({ openModalLogin, setOpenModalLogin, handleClose ,onLogInGoogle}) {
+function LogInModal() {
     const style = {
         position: 'absolute',
         top: '50%',
@@ -15,7 +17,31 @@ function LogInModal({ openModalLogin, setOpenModalLogin, handleClose ,onLogInGoo
         boxShadow: 24,
         p: 4,
     };
-   
+
+
+    const dispatch = useDispatch();
+   const {openModalLogin } = useSelector((reduxData) => reduxData.modal);
+    const handleClose = () => {
+        dispatch({
+            type: "OPEN_LOGIN_MODAL",
+            payload:{
+                openModalLogin: false
+            }
+        })
+    }
+
+   const onLogInGoogle = () => {
+    auth.signInWithPopup(googleProvider)
+        .then((result) => {
+            handleClose();
+            
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+
+}
+
     return (
 
         <Modal
