@@ -44,7 +44,7 @@ function Footer() {
                     </Grid>
                     <Grid item container xs={3} md={3}>
                         <Grid item xs={12} md={12} textAlign="center" sx={{margin:"0"}} >
-                             <h1 style={{paddingTop:"20px"}}>Devcamp</h1>   
+                             <h3 style={{paddingTop:"20px"}}>Follow us: </h3>   
                         </Grid>
                         <Grid item xs={12} md={12} textAlign="center">
                             <FacebookRoundedIcon sx={{paddingLeft:"10px"}}/>

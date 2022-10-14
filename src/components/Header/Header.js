@@ -1,4 +1,7 @@
-import { Button, Container, Grid, Typography, Link, Menu, MenuItem, Avatar } from "@mui/material";
+
+import './Header.css';
+import Logo from "../../app/image/Logo.jfif"
+import { Button, Grid,  Link, Menu, MenuItem, Avatar } from "@mui/material";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import PersonIcon from '@mui/icons-material/Person';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -10,36 +13,33 @@ import { useDispatch } from "react-redux";
 
 function Header() {
     const dispatch = useDispatch();
-    const {cartSize} = useSelector((reduxData) => reduxData.cart);
+    const { cartSize } = useSelector((reduxData) => reduxData.cart);
     const [openModalLogin, setOpenModalLogin] = useState(false);
     const [user, setUser] = useState(null);
     const handleClose = () => setOpenModalLogin(false);
     const handleCloseItem = () => setAnchorEl(null);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [itemList, setItemList] = useState(0);
     const open = Boolean(anchorEl);
-   
-   
-    
+
+
+
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
     const onLogInClick = () => {
-        setOpenModalLogin(true);
+        dispatch({
+            type:"OPEN_LOGIN_MODAL",
+            payload:{
+                openModalLogin: true
+            }
+        })
+        setAnchorEl(null)
     }
-    
-    const onLogInGoogle = () => {
-        auth.signInWithPopup(googleProvider)
-            .then((result) => {
-                setUser(result.user);
-                handleClose();
-                setAnchorEl(null)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
 
-    }
+    
     const logoutGoogle = () => {
         auth.signOut()
             .then(() => {
@@ -49,36 +49,43 @@ function Header() {
                 console.log(error);
             })
     }
+    useEffect(() =>{
+        const listOrder = localStorage.getItem('order') ? JSON.parse(localStorage.getItem('order')) : [];
+        setItemList(listOrder.length);
+    })
     useEffect(() => {
         auth.onAuthStateChanged((result) => {
             console.log(result);
 
             setUser(result);
         })
-        const listOrder = localStorage.getItem('order') ? JSON.parse(localStorage.getItem('order')) : [];    
+        const listOrder = localStorage.getItem('order') ? JSON.parse(localStorage.getItem('order')) : [];
         dispatch({
             type: "ADD_TO_CART",
             size: listOrder.length
-        })   
+        })
+        setItemList(listOrder.length);
+        
     }, [])
 
 
     return (
-        <div >
-            <Grid container style={headerPosition}>
-                <Grid item xs={6} pl={15}>
-                    <Typography style={logo} ml={6}><Link style={textDecoration} href="/">Shop24h</Link></Typography>
-                    <Button variant="outline" style={buttonSpace} ><Link href="/product" style={textDecoration}>Tất cả sản phẩm</Link></Button>
+        <div className='headerPosition'>
+            <Grid container >
+                <Grid item xs={5} pl={15}>
+                    <Link href="/">
+                        <img src={Logo}  alt={"logo"} className="imgResponsive"/>
+                    </Link>
                 </Grid>
-                <Grid item xs={6} textAlign="center"  rowSpacing={2} sx={{marginTop:"10px"}} >
+                <Grid item xs={7} textAlign="center" rowSpacing={2} sx={{margin:"auto"}} className="test">
 
                     {
                         user ? <>
-                            <Button style={styleButon}  ><NotificationsActiveIcon /></Button>
-                            <Button style={styleButon} sx={{width:"20%"}} href="/cart"><AddShoppingCartIcon />Giỏ hàng <code style={{marginBottom:"5px", borderRadius:"15px", backgroundColor:"red" , padding:"0px 8px"}}>{cartSize !== 0 ? cartSize : null }</code></Button>
-                            <Button onClick={handleClick} sx={{ marginTop: "-5px",marginLeft:"-50px" }} textAlign="left" ><Avatar alt="avatar" src={user.photoURL} sx={{ width: "17%", height: "17%" }} /><span>{"\u00a0"}{user.displayName}</span></Button>
+                            <Button sx={{ color: "white" }} className="iconResp"><NotificationsActiveIcon /></Button>
+                            <Button sx={{ width: "20%", color: "white" }} className="cart" href="/cart" ><AddShoppingCartIcon />Giỏ hàng <code style={{ marginBottom: "5px", borderRadius: "15px", backgroundColor: "red", padding: "0px 8px" }}>{itemList !== 0 ? itemList : null}</code></Button>
+                            <Button onClick={handleClick} sx={{ marginTop: "-5px", color: "white" }} textAlign="left" className="userResp"><Avatar alt="avatar" src={user.photoURL} sx={{ width: "20%", height: "20%" }} /><span>{"\u00a0"}{user.displayName}</span></Button>
                             <Menu
-                                sx={{marginLeft:"60px"}}
+                                sx={{ marginLeft: "60px" }}
                                 anchorEl={anchorEl}
                                 open={open}
                                 onClose={handleCloseItem}
@@ -90,16 +97,16 @@ function Header() {
                                 <MenuItem onClick={handleClose}>My account</MenuItem>
                                 <MenuItem onClick={logoutGoogle}>Logout</MenuItem>
                             </Menu>
-                        </> 
-                        : 
-                        <>
-                            <Button style={styleButon} onClick={() => { onLogInClick() }} ><PersonIcon />Đăng nhập</Button>
-                            <Button style={styleButon} href="/cart"><AddShoppingCartIcon />Giỏ hàng <code style={{ marginBottom:"5px" ,  borderRadius:"15px", backgroundColor:"red" , padding:"0px 8px"}}>{cartSize !== 0 ? cartSize : null }</code></Button>
                         </>
+                            :
+                            <>
+                                <Button onClick={onLogInClick} sx={{ color: "white" }} ><PersonIcon />Đăng nhập</Button>
+                                <Button href="/cart" sx={{ color: "white" }}><AddShoppingCartIcon />Giỏ hàng <code style={{ marginBottom: "5px", borderRadius: "15px", backgroundColor: "red", padding: "0px 8px" }}>{itemList !== 0 ? itemList : null}</code></Button>
+                            </>
                     }
                 </Grid>
             </Grid>
-            <LogInModal openModalLogin={openModalLogin} setOpenModalLogin={setOpenModalLogin} handleClose={handleClose} onLogInGoogle={onLogInGoogle} />
+            <LogInModal  />
         </div>
     )
 }

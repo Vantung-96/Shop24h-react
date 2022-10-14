@@ -1,16 +1,22 @@
 import { Container, Table, TableHead, TableRow, TableCell, TableContainer, Paper, Grid, TableBody, Button, } from "@mui/material";
 import Footer from "../components/Footer/Footer";
 import Header from "../components/Header/Header";
-
+import LogInModal from "../components/Content/LogInModal/LoginModal";
 import { useEffect, useState } from "react";
+import { auth, googleProvider } from "../firebase";
+import { useDispatch } from 'react-redux';
+import SnackbarAlert from "../components/Snackbar/SnackBarAlert";
+import OrderModal from "../components/OrderModal/OrderModal";
 
 function Cart() {
     const [order, setOrder] = useState([]);
     const [itemTotal, setItemTotal] = useState(0);
     const [selectItem, setSelectItem] = useState([])
-
+    const [user, setUsers] = useState([]);
+    const dispatch = useDispatch();
 
     // Add/Remove checked item from list
+    // Choose All
     const onSelectAllItem = (e) => {
         let total = 0;
         let arraySelectedItem = [];
@@ -31,7 +37,7 @@ function Cart() {
         setItemTotal(total);
         setSelectItem(arraySelectedItem);
     };
-
+    // Choose One item
     const onSelectItem = (event) => {
         let total = itemTotal;
         let arraySelectedItem = selectItem;
@@ -51,7 +57,7 @@ function Cart() {
         setItemTotal(total);
         setSelectItem(arraySelectedItem);
     }
-
+    // Minus Amount
     const onBtnMinusAmountClick = (param) => {
 
         order.forEach((element, index) => {
@@ -69,9 +75,10 @@ function Cart() {
         })
         localStorage.setItem("order", JSON.stringify(order));
     }
+    // Add Mount
     const onBtnAddAmountClick = (param) => {
         order.forEach((element, index) => {
-            if(element.id === param.id) {
+            if (element.id === param.id) {
                 if (itemTotal > 0 && element.amount <= param.amount && Boolean(selectItem.find(item => item.id === element.id)) === true) {
                     let newTotal = itemTotal + param.promotionPrice;
                     setItemTotal(newTotal);
@@ -86,10 +93,7 @@ function Cart() {
         })
         localStorage.setItem("order", JSON.stringify(order));
     }
-
-
-
-
+    // Delete Order
     const onDeleteOrderClick = (id) => {
         var newOrder = localStorage.getItem("order") ? JSON.parse(localStorage.getItem("order")) : [];
         newOrder.splice(id, 1);
@@ -97,12 +101,46 @@ function Cart() {
         setOrder(newOrder);
     }
 
-   
+    // BTn Order Click
+    const onBtnOrderClick = () => {
+        if (itemTotal > 0) {
+            if (user) {
+                dispatch({
+                    type: "ORDER_MODAL",
+                    payload:{
+                        openOrderModal: true
+                    }
+                })
+            }
+            else {
+                dispatch({
+                    type: "OPEN_LOGIN_MODAL",
+                    payload: {
+                        openModalLogin: true
+                    }
+                })
+            }
+        }
+        else {
+            dispatch({
+                type: "OPEN_SNACKBAR",
+                payload: {
+                    openSnackbar: true,
+                    alertString:"Vui lòng chọn vật phẩm muốn thanh toán !!!"
+                }
+            })
+        }
+
+    }
+
+
 
     useEffect(() => {
         setOrder(localStorage.getItem("order") ? JSON.parse(localStorage.getItem("order")) : [])
-
-    })
+        auth.onAuthStateChanged((result) => {
+            setUsers(result);
+        })
+    }, [])
 
     return (
         < >
@@ -122,7 +160,7 @@ function Cart() {
                                     />
                                 </TableCell>
                                 <TableCell sx={{ width: "35%" }}>Sản Phẩm</TableCell>
-                                <TableCell textAlign="center"sx={{ width: "15%" }}>Đơn Giá</TableCell>
+                                <TableCell textAlign="center" sx={{ width: "15%" }}>Đơn Giá</TableCell>
                                 <TableCell textAlign="center" sx={{ width: "15%" }}>Số Lượng</TableCell>
                                 <TableCell textAlign="center" sx={{ width: "20%" }}>Số Tiền</TableCell>
                                 <TableCell textAlign="center" sx={{ width: "15%" }}>Thao Tác</TableCell>
@@ -175,13 +213,16 @@ function Cart() {
                         />
                         Chọn tất cả ({order.length})
                     </Grid>
-                    <Grid item xs={7} textAlign="center" style={{ marginTop: "2px" }}>
+                    <Grid item xs={7} textAlign="center" >
                         <h2>Tổng thanh toán ({itemTotal} $):</h2>
                     </Grid>
                     <Grid item xs={3} textAlign="right">
-                        <Button variant="contained" fullWidth>ĐẶT HÀNG</Button>
+                        <Button variant="contained" fullWidth onClick={onBtnOrderClick}>ĐẶT HÀNG</Button>
                     </Grid>
                 </Grid>
+                <LogInModal />
+                <SnackbarAlert/>
+                <OrderModal/>
             </Container>
             <Footer />
         </>

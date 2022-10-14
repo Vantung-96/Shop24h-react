@@ -1,0 +1,52 @@
+ .headerPosition {
+    width: 100%;
+    position: fixed;
+     background-color: #96D6FF;
+     color: white;
+     z-index: 1;
+   padding: 1px 0;
+   text-align: left;
+}
+.imgResponsive {
+    width: 14%;
+    padding-left: 8rem;
+}
+.cart {
+    width: "20%";
+    color: "white";
+}
+
+
+@media (max-device-height: 667px) and (max-device-width: 375px) {
+    .headerResp{
+        display: flex;
+        transform: scale(0.6, 0.6);
+    }
+    .userResp {
+        position: relative;
+        left: 10px;
+    }
+    a.cart {
+        position: relative;
+        color: "white";
+        width: 50%;
+        padding: 0;
+        right: 35px;
+        
+    }
+    .imgResponsive{
+        width: 80%;
+        position: relative;
+        right: 80px;
+        top:4px;
+    }
+    .iconResp{
+        position: relative;
+        right: 30px;
+    }
+
+}
+
+
+
+
