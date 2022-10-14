@@ -4,6 +4,7 @@ const initialState = {
     alertString:"",
     alertSeverity:"error",
     openOrderModal: false,
+    selectItem:[]
 }
 
 const modalReducer = (state = initialState, action) => {
@@ -31,6 +32,12 @@ const modalReducer = (state = initialState, action) => {
                 ...state,
                 openOrderModal: action.payload.openOrderModal
             }
+        case "ITEM_SELECT":
+            return{
+                ...state,
+                selectItem:action.payload.selectItem
+            }
+            
         default:
             return state;
     }
