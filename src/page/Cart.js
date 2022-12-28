@@ -104,6 +104,12 @@ function Cart() {
     // BTn Order Click
     const onBtnOrderClick = () => {
         if (itemTotal > 0) {
+            dispatch({
+                type: "ITEM_SELECT",
+                payload:{
+                    selectItem: selectItem
+                }
+            })
             if (user) {
                 dispatch({
                     type: "ORDER_MODAL",
@@ -222,7 +228,7 @@ function Cart() {
                 </Grid>
                 <LogInModal />
                 <SnackbarAlert/>
-                <OrderModal/>
+                <OrderModal user={user} itemTotal={itemTotal} selectItems={selectItem}/>
             </Container>
             <Footer />
         </>
