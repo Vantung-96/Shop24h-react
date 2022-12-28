@@ -40,7 +40,7 @@ function DanhMuc() {
 
 
     if (isClick) {
-        getData("https://shop24h-nodejs.herokuapp.com/product?min=" + minPrice + "&max=" + maxPrice + `&name=${nameSearch}`)
+        getData("https://shop-api24h.onrender.com/product?min=" + minPrice + "&max=" + maxPrice + `&name=${nameSearch}`)
             .then((result) => {
                 setNoPage(Math.ceil(result.data.length / limitPage));
 
@@ -59,7 +59,7 @@ function DanhMuc() {
 
 
     useEffect(() => {
-        getData("https://shop24h-nodejs.herokuapp.com/product")
+        getData("https://shop-api24h.onrender.com/product")
             .then((result) => {
                 setNoPage(Math.ceil(result.data.length / limitPage));
 

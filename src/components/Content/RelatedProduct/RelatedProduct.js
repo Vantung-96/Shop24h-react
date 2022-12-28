@@ -24,7 +24,7 @@ function RelatedProduct() {
 
 
     useEffect(() => {
-        getData("https://shop24h-nodejs.herokuapp.com/product?limit=" + limit)
+        getData("https://shop-api24h.onrender.com/product?limit=" + limit)
             .then((result) => {
                 setData(result.data)
             })

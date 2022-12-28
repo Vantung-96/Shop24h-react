@@ -84,7 +84,7 @@ function ProductDetail() {
     const { productId } = useParams();
 
     useEffect(() => {
-        getData("https://shop24h-nodejs.herokuapp.com/product/" + productId)
+        getData("https://shop-api24h.onrender.com/product/" + productId)
             .then((data) => {
                 setDataDetail(data.data);
 
